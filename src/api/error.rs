@@ -79,6 +79,7 @@ impl From<reqwest::Error> for ApiError {
 
 impl From<serde_json::Error> for ApiError {
     fn from(_value: serde_json::Error) -> Self {
+        println!("{_value:?}");
         ApiError::BackendError
     }
 }

@@ -1,13 +1,12 @@
+use actix_web::get;
 use actix_web::web;
 use actix_web::HttpResponse;
 use actix_web::Responder;
-use serde::Serialize;
 use serde::Deserialize;
-use actix_web::get;
+use serde::Serialize;
 
 use super::config::ServerConfig;
 use super::error::ApiError;
-
 
 #[derive(Default, Serialize, Deserialize)]
 /// Data returned to the ".well-known/lnurlp/{username}" endpoint
@@ -24,6 +23,12 @@ pub struct LnAddressInfo {
     callback: String,
     /// A stringfyed json with some metadata about ourselves
     metadata: String,
+    /// Do we support nostr?
+    #[serde(rename = "allowsNostr")]
+    allows_nostr: bool,
+    /// the server's public key
+    #[serde(rename = "nostrPubkey")]
+    nostr_pubkey: String,
 }
 
 #[get("/.well-known/lnurlp/{user}")]
@@ -59,4 +64,3 @@ pub async fn well_known(
 
     Ok(HttpResponse::Ok().json(user))
 }
-

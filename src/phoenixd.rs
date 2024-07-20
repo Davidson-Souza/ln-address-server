@@ -11,7 +11,7 @@ pub struct PhoenixdClient {
     /// You can find this in $PHOENIXD_DATA_DIR/phoenixd.conf
     pub password: String,
     /// The host where phoenixd is running
-    pub host: String
+    pub host: String,
 }
 
 #[derive(Default, Serialize, Deserialize)]
