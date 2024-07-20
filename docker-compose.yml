@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  rust-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rust_app_container
+    command: /bin/sh -c "./target/release/ln-address $$PHOENIXD_PASSWORD"
+    volumes:
+      - .:/usr/src/ln-address-sever
+    ports:
+      - "8080:8080" # server port
+      - "9740:9740" # phoenix client
+    environment:
+      - PHOENIXD_PASSWORD
