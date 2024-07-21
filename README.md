@@ -40,3 +40,10 @@ $ ln-address <PASSWORD>
 ```
 
 Run `--help` to see all options.
+
+### Using with docker
+
+Copy/rename `.env.sample` to `.env` and fill the `PHOENIXD_PASSWORD` environment variable with your local password, then run the usual `docker compose up` command. 
+
+Attention: this intentionally does not include a container for `phoenixd`. 
+
