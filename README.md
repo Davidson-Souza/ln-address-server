@@ -11,9 +11,6 @@ To use, just build it with rust, and then you'll need a folder with the json of 
 
 ```json
 {
-	"maxSendable": MAX_SENDABLE,
-	"minSendable": MIN_SENDABLE,
-	"tag": "payRequest",
 	"metadata": "[[\"text/plain\",\"YOUR DESCRIPTION\"]]",
 	"callback": "https://<CALLBACK ADDRESS>/callback"
 }
@@ -25,9 +22,6 @@ Here's an example:
 
 ```json
 {
-	"maxSendable": 100000000,
-	"minSendable": 1000,
-	"tag": "payRequest",
 	"metadata": "[[\"text/plain\",\"my ln address\"]]",
 	"callback": "https://smith.com/callback"
 }
@@ -36,7 +30,7 @@ Here's an example:
 After that, you need to start `phoenixd` and get the password from `~/.phoenix/phoenix.conf`. You'll see a field like `http-password=<PASSWORD>`. Only copy the `PASSWORD` part. The start this with
 
 ```bash
-$ ln-address <PASSWORD>
+$ ln-address <PASSWORD> --secret-key <a 32-bytes hex-encoded private key for the zap server>
 ```
 
 Run `--help` to see all options.

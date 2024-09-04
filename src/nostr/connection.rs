@@ -27,17 +27,21 @@ impl WebsocketConnection {
         self.url.clone()
     }
 
-    pub async fn new(id: usize, url: String, msg_sender: Sender<(usize, Message)>) -> Self {
-        let (ws_stream, _) = connect_async(&url).await.expect("Failed to connect");
+    pub async fn new(
+        id: usize,
+        url: String,
+        msg_sender: Sender<(usize, Message)>,
+    ) -> tokio_tungstenite::tungstenite::Result<Self> {
+        let (ws_stream, _) = connect_async(&url).await?;
         let (writer, reader) = ws_stream.split();
         let read_loop_hadle = tokio::task::spawn(Self::read_loop(id, reader, msg_sender));
 
-        Self {
+        Ok(Self {
             id,
             writer,
             read_loop_hadle,
             url,
-        }
+        })
     }
 
     pub async fn write_to_connection(

@@ -17,4 +17,6 @@ pub struct ServerConfig {
     pub host: String,
     /// A sender to our zap handler
     pub zap_sender: Sender<PendingZap>,
+    /// The pubkey of our lnaddress server. This is used to sign the zap receipt
+    pub zap_pk: String,
 }

@@ -96,7 +96,9 @@ impl ZapHandler {
         let mut ids = 0;
         for relay_url in RELAYS {
             let relay = WebsocketConnection::new(ids, relay_url.into(), ws_send.clone()).await;
-            connected_relays.push(relay);
+            if let Ok(relay) = relay {
+                connected_relays.push(relay);
+            }
             ids += 1;
         }
 
@@ -239,7 +241,10 @@ impl ZapHandler {
                             self.relays_sender.clone(),
                         )
                         .await;
-                        self.connected_relays.push(relay);
+
+                        if let Ok(relay) = relay {
+                            self.connected_relays.push(relay);
+                        }
                     }
 
                     _ => {}

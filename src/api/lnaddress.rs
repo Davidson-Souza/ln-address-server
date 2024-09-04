@@ -31,6 +31,14 @@ pub struct LnAddressInfo {
     nostr_pubkey: String,
 }
 
+#[derive(Default, Serialize, Deserialize)]
+pub struct UserData {
+    /// The address that should be called to obtain an invoice
+    callback: String,
+    /// A stringfyed json with some metadata about ourselves
+    metadata: String,
+}
+
 #[get("/.well-known/lnurlp/{user}")]
 pub async fn well_known(
     user: web::Path<String>,
@@ -59,8 +67,18 @@ pub async fn well_known(
 
     let users_dir = &app_data.as_ref().users_dir;
     let user = std::fs::read_to_string(format!("{users_dir}/{user}"))
-        .map(|user| serde_json::from_str::<LnAddressInfo>(&user))
+        .map(|user| serde_json::from_str::<UserData>(&user))
         .map_err(|_| ApiError::UnknownUser)??;
 
-    Ok(HttpResponse::Ok().json(user))
+    let response = LnAddressInfo {
+        tag: "payRequest".into(),
+        callback: user.callback,
+        metadata: user.metadata,
+        max_sendable: 10_000_000,
+        min_sendable: 1,
+        nostr_pubkey: app_data.as_ref().zap_pk.clone(),
+        allows_nostr: true,
+    };
+
+    Ok(HttpResponse::Ok().json(response))
 }

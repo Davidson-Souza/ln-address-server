@@ -34,7 +34,6 @@ async fn main() -> Result<(), std::io::Error> {
         .0
         .serialize()
         .to_lower_hex_string();
-    println!("zap receipt pubkey: {pubkey}");
 
     let (zap_handler, sender) = ZapHandler::new(ph_client.clone(), cli.secret_key).await;
 
@@ -44,6 +43,7 @@ async fn main() -> Result<(), std::io::Error> {
         users_dir: cli.users_dir.unwrap_or("./users".to_owned()),
         host: format!("{host}:{port}"),
         zap_sender: sender,
+        zap_pk: pubkey,
     };
 
     api::api::run_server(config).await
